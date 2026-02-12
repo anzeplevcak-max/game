@@ -43,4 +43,63 @@
 #3. dodatna naloga
 #naredi megre obeh branchov
 
+import pygame
+import sys
+
+pygame.init()
+
+WIDTH, HEIGHT = 600, 600
+CELL_SIZE = 20
+
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Snake - II")
+
+clock = pygame.time.Clock()
+FPS = 10   # manjši FPS = premikanje po gridu
+
+x = WIDTH // 2
+y = HEIGHT // 2
+
+direction = (CELL_SIZE, 0)
+
+font = pygame.font.SysFont(None, 40)
+hit_wall = False
+
+running = True
+while running:
+    clock.tick(FPS)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                direction = (-CELL_SIZE, 0)
+            if event.key == pygame.K_RIGHT:
+                direction = (CELL_SIZE, 0)
+            if event.key == pygame.K_UP:
+                direction = (0, -CELL_SIZE)
+            if event.key == pygame.K_DOWN:
+                direction = (0, CELL_SIZE)
+
+    x += direction[0]
+    y += direction[1]
+
+    if x < 0 or x >= WIDTH or y < 0 or y >= HEIGHT:
+        hit_wall = True
+
+    screen.fill((0, 0, 0))
+
+    pygame.draw.rect(screen, (0, 200, 0), (x, y, CELL_SIZE, CELL_SIZE))
+
+    if hit_wall:
+        text = font.render("Zadel si steno!", True, (255, 0, 0))
+        screen.blit(text, (200, 280))
+
+    pygame.display.flip()
+
+pygame.quit()
+sys.exit()
+
 
